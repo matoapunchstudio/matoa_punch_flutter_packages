@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 // Not required for test files
 // ignore_for_file: prefer_const_constructors
 
@@ -29,6 +31,21 @@ void main() {
       final decoded = RbacCodec.decodePermissions(encoded);
 
       expect(decoded, isEmpty);
+    });
+
+    test('decodes legacy camelCase permission payloads', () {
+      final encoded = base64Encode(
+        utf8.encode(
+          '[{"name":"user.read","displayName":"Read User"}]',
+        ),
+      );
+
+      final decoded = RbacCodec.decodePermissions(encoded);
+
+      expect(
+        decoded,
+        const [Permission(name: 'user.read', displayName: 'Read User')],
+      );
     });
   });
 }

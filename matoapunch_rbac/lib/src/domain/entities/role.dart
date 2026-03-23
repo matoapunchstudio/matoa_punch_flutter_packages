@@ -14,10 +14,12 @@ class Role extends Equatable implements ShouldHavePermission {
   /// Creates a role from its JSON representation.
   factory Role.fromJson(Map<String, dynamic> json) {
     final permissionsJson = json['permissions'] as List<dynamic>? ?? const [];
+    final displayName =
+        (json['display_name'] ?? json['displayName']) as String;
 
     return Role(
       name: json['name'] as String,
-      displayName: json['displayName'] as String,
+      displayName: displayName,
       permissions: permissionsJson
           .map(
             (permission) =>
@@ -37,11 +39,11 @@ class Role extends Equatable implements ShouldHavePermission {
   @override
   final List<Permission> permissions;
 
-  /// Converts this role into a JSON representation.
+  /// Converts this role into a snake_case JSON representation.
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
-      'displayName': displayName,
+      'display_name': displayName,
       'permissions': permissions
           .map((permission) => permission.toJson())
           .toList(growable: false),

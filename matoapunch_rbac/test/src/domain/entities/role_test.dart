@@ -25,17 +25,37 @@ void main() {
 
       expect(role.toJson(), const <String, dynamic>{
         'name': 'admin',
-        'displayName': 'Administrator',
+        'display_name': 'Administrator',
         'permissions': [
           {
             'name': 'user.read',
-            'displayName': 'Read User',
+            'display_name': 'Read User',
           },
         ],
       });
     });
 
     test('deserializes from json', () {
+      final role = Role.fromJson(const <String, dynamic>{
+        'name': 'admin',
+        'display_name': 'Administrator',
+        'permissions': [
+          {
+            'name': 'user.read',
+            'display_name': 'Read User',
+          },
+        ],
+      });
+
+      expect(role.name, 'admin');
+      expect(role.displayName, 'Administrator');
+      expect(
+        role.permissions,
+        const [Permission(name: 'user.read', displayName: 'Read User')],
+      );
+    });
+
+    test('deserializes from legacy camelCase json', () {
       final role = Role.fromJson(const <String, dynamic>{
         'name': 'admin',
         'displayName': 'Administrator',

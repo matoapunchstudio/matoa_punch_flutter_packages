@@ -21,11 +21,21 @@ void main() {
 
       expect(permission.toJson(), const <String, dynamic>{
         'name': 'user.read',
-        'displayName': 'Read User',
+        'display_name': 'Read User',
       });
     });
 
     test('deserializes from json', () {
+      final permission = Permission.fromJson(const <String, dynamic>{
+        'name': 'user.read',
+        'display_name': 'Read User',
+      });
+
+      expect(permission.name, 'user.read');
+      expect(permission.displayName, 'Read User');
+    });
+
+    test('deserializes from legacy camelCase json', () {
       final permission = Permission.fromJson(const <String, dynamic>{
         'name': 'user.read',
         'displayName': 'Read User',

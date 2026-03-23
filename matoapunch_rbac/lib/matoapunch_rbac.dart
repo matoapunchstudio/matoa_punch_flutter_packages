@@ -1,5 +1,8 @@
 /// A Very Good Project created by Very Good CLI.
 library;
 
+export 'domain.dart';
+export 'extensions.dart';
 export 'src/matoapunch_rbac.dart';
-export 'src/widgets/rbac_guard.dart';
+export 'utils.dart';
+export 'widgets.dart';

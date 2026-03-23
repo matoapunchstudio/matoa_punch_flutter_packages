@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:matoapunch_rbac/matoapunch_rbac.dart';
-import 'package:matoapunch_rbac/src/domain/entities/permission.dart';
-import 'package:matoapunch_rbac/src/domain/entities/role.dart';
 
 void main() {
   group('RbacGuard', () {
