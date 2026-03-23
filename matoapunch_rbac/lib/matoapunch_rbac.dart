@@ -2,3 +2,4 @@
 library;
 
 export 'src/matoapunch_rbac.dart';
+export 'src/widgets/rbac_guard.dart';
