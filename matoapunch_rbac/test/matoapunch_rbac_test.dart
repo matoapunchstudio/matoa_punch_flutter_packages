@@ -4,6 +4,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:matoapunch_rbac/matoapunch_rbac.dart';
 import 'package:matoapunch_rbac/src/domain/entities/permission.dart';
+import 'package:matoapunch_rbac/src/domain/entities/role.dart';
 
 void main() {
   group('MatoapunchRbac', () {
@@ -98,6 +99,56 @@ void main() {
       final decoded = MatoapunchRbac.fromEncodedPermissions(encoded);
 
       expect(decoded.permissions, rbac.permissions);
+    });
+
+    test('creates RBAC state from role permissions', () {
+      final role = Role(
+        name: 'admin',
+        displayName: 'Administrator',
+        permissions: const [
+          Permission(name: 'user.read', displayName: 'Read User'),
+          Permission(name: 'user.write', displayName: 'Write User'),
+        ],
+      );
+
+      final rbac = MatoapunchRbac.fromRole(role);
+
+      expect(rbac.permissions, role.permissions);
+      expect(rbac.hasPermissionByName('user.read'), isTrue);
+      expect(rbac.hasPermissionByName('user.write'), isTrue);
+      expect(rbac.hasPermissionByName('user.delete'), isFalse);
+    });
+
+    test('creates RBAC state from combined role permissions', () {
+      final roles = [
+        const Role(
+          name: 'admin',
+          displayName: 'Administrator',
+          permissions: [
+            Permission(name: 'user.read', displayName: 'Read User'),
+          ],
+        ),
+        const Role(
+          name: 'editor',
+          displayName: 'Editor',
+          permissions: [
+            Permission(name: 'user.write', displayName: 'Write User'),
+          ],
+        ),
+      ];
+
+      final rbac = MatoapunchRbac.fromAnyRole(roles);
+
+      expect(rbac.hasPermissionByName('user.read'), isTrue);
+      expect(rbac.hasPermissionByName('user.write'), isTrue);
+      expect(rbac.hasPermissionByName('user.delete'), isFalse);
+    });
+
+    test('creates empty RBAC state from empty role list', () {
+      final rbac = MatoapunchRbac.fromAnyRole(const []);
+
+      expect(rbac.permissions, isEmpty);
+      expect(rbac.hasPermissionByName('user.read'), isFalse);
     });
   });
 }

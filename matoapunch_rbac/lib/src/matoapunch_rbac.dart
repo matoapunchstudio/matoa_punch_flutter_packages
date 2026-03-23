@@ -1,10 +1,13 @@
 import 'package:matoapunch_rbac/src/domain/entities/permission.dart';
+import 'package:matoapunch_rbac/src/domain/entities/role.dart';
 import 'package:matoapunch_rbac/src/utils/rbac_codec.dart';
 
 /// {@template matoapunch_rbac}
 /// Stores and evaluates an immutable RBAC permission set.
 ///
 /// Permission identity is based on the stable `name` field.
+/// A role can be projected into an RBAC state through
+/// [MatoapunchRbac.fromRole].
 /// {@endtemplate}
 class MatoapunchRbac {
   /// Creates an immutable RBAC state object.
@@ -33,6 +36,26 @@ class MatoapunchRbac {
     return MatoapunchRbac(
       permissions: RbacCodec.decodePermissions(encodedPermissions),
     );
+  }
+
+  /// Creates an RBAC state object from the permissions granted by [role].
+  factory MatoapunchRbac.fromRole(Role role) =>
+      MatoapunchRbac(permissions: role.permissions);
+
+  /// Creates an RBAC state object from the combined permissions of [roles].
+  ///
+  /// When [roles] is empty, this returns an empty RBAC state.
+  factory MatoapunchRbac.fromAnyRole(List<Role> roles) {
+    if (roles.isEmpty) {
+      return MatoapunchRbac();
+    }
+
+    final permissions = roles
+        .map((e) => e.permissions)
+        .reduce((a, b) => a + b)
+        .toList(growable: false);
+
+    return MatoapunchRbac(permissions: permissions);
   }
 
   const MatoapunchRbac._({

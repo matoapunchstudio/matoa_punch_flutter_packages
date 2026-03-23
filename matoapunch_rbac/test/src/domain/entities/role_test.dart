@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:matoapunch_rbac/src/domain/entities/permission.dart';
 import 'package:matoapunch_rbac/src/domain/entities/role.dart';
 
 void main() {
@@ -17,11 +18,20 @@ void main() {
       final role = Role(
         name: 'admin',
         displayName: 'Administrator',
+        permissions: const [
+          Permission(name: 'user.read', displayName: 'Read User'),
+        ],
       );
 
       expect(role.toJson(), const <String, dynamic>{
         'name': 'admin',
         'displayName': 'Administrator',
+        'permissions': [
+          {
+            'name': 'user.read',
+            'displayName': 'Read User',
+          },
+        ],
       });
     });
 
@@ -29,10 +39,20 @@ void main() {
       final role = Role.fromJson(const <String, dynamic>{
         'name': 'admin',
         'displayName': 'Administrator',
+        'permissions': [
+          {
+            'name': 'user.read',
+            'displayName': 'Read User',
+          },
+        ],
       });
 
       expect(role.name, 'admin');
       expect(role.displayName, 'Administrator');
+      expect(
+        role.permissions,
+        const [Permission(name: 'user.read', displayName: 'Read User')],
+      );
     });
   });
 }
