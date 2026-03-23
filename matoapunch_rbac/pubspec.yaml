@@ -11,11 +11,6 @@ dependencies:
   equatable: ^2.0.8
   flutter:
     sdk: flutter
-  syswo_core:
-    git:
-      url: https://github.com/wandx/syswo.git
-      ref: develop
-      path: packages/syswo_core
 
 dev_dependencies:
   flutter_test:
