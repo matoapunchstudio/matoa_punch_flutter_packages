@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:matoapunch_rbac/src/domain/abstracts/should_have_permission.dart';
 import 'package:matoapunch_rbac/src/domain/entities/permission.dart';
 
 /// A role that groups permissions under a stable identifier and label.
-class Role extends Equatable {
+class Role extends Equatable implements ShouldHavePermission {
   /// Creates a role definition used by the RBAC domain.
   const Role({
     required this.name,
@@ -33,6 +34,7 @@ class Role extends Equatable {
   final String displayName;
 
   /// The permissions grouped under this role.
+  @override
   final List<Permission> permissions;
 
   /// Converts this role into a JSON representation.
