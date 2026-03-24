@@ -5,6 +5,9 @@ HTTP utilities for Matoa Punch Studio Flutter packages.
 This package is built on top of `chopper` and currently provides:
 
 - `HttpErrorInterceptor` to normalize failed HTTP responses and transport errors.
+- `AuthBearerInterceptor` to attach Bearer tokens from `shared_preferences` with optional auto-refresh on 401.
+- `HttpClient` factory for creating unauthenticated `ChopperClient` instances.
+- `AuthHttpClient` factory for creating authenticated `ChopperClient` instances.
 - `ResponseException` as a structured exception model for request failures.
 - `ConnectionResultStatus` to classify request outcomes.
 
@@ -44,10 +47,34 @@ It exports:
 - `ConnectionResultStatus`
 - `ResponseException`
 - `HttpErrorInterceptor`
+- `AuthBearerInterceptor`
+- `HttpClient`
+- `AuthHttpClient`
 
 ## Usage
 
-Attach `HttpErrorInterceptor` to your `ChopperClient` so HTTP failures are surfaced as `ResponseException`.
+### Quick Start with Client Factories
+
+Use the factory classes to create pre-configured `ChopperClient` instances:
+
+```dart
+import 'package:matoapunch_http/matoapunch_http.dart';
+
+// Unauthenticated client (includes HttpErrorInterceptor)
+final client = HttpClient.create(
+  baseUrl: Uri.parse('https://api.example.com'),
+);
+
+// Authenticated client (includes AuthBearerInterceptor + HttpErrorInterceptor)
+final authClient = AuthHttpClient.create(
+  baseUrl: Uri.parse('https://api.example.com'),
+  tokenKey: 'token',
+);
+```
+
+### Manual ChopperClient Setup
+
+Attach interceptors directly to your `ChopperClient`:
 
 ```dart
 import 'package:chopper/chopper.dart';
@@ -60,6 +87,43 @@ final client = ChopperClient(
   ],
 );
 ```
+
+### AuthBearerInterceptor
+
+The `AuthBearerInterceptor` reads a Bearer token from `shared_preferences` and attaches it to every request:
+
+```dart
+final client = ChopperClient(
+  baseUrl: Uri.parse('https://api.example.com'),
+  interceptors: [
+    AuthBearerInterceptor(tokenKey: 'token'),
+    HttpErrorInterceptor(),
+  ],
+);
+```
+
+#### Auto Token Refresh on 401
+
+Pass an `onRefreshToken` callback to automatically refresh expired tokens:
+
+```dart
+final client = AuthHttpClient.create(
+  baseUrl: Uri.parse('https://api.example.com'),
+  tokenKey: 'token',
+  onRefreshToken: () async {
+    // Your refresh logic (e.g., call a refresh endpoint)
+    final newToken = await refreshToken();
+    return newToken; // Return null to indicate failure
+  },
+);
+```
+
+When a 401 response is received:
+1. The `onRefreshToken` callback is called.
+2. If it returns a new token, the token is saved and the request is retried.
+3. If it returns `null`, the original 401 response is returned.
+
+### Error Handling
 
 When a request fails, inspect the normalized exception:
 
