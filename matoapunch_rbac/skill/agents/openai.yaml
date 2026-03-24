@@ -1,4 +1,0 @@
-interface:
-  display_name: "Matoapunch RBAC"
-  short_description: "Use the Matoapunch RBAC package"
-  default_prompt: "Use $matoapunch-rbac to implement or update RBAC with this package."
