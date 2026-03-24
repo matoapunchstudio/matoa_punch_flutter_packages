@@ -114,13 +114,12 @@ packages/
 
 ## Environment
 
-Current package constraints are not fully uniform yet:
+All packages share the same SDK constraints:
 
-- `matoapunch_core` and `matoapunch_http` target Dart `^3.9.0` and Flutter `^3.35.0`
-- `matoapunch_pocketbase` also targets Dart `^3.9.0` and Flutter `^3.35.0`
-- `matoapunch_limiter` and `matoapunch_rbac` target Dart `^3.11.0` and Flutter `^3.41.0`
+- **Dart:** `^3.11.0`
+- **Flutter:** `^3.41.0`
 
-When working across the whole repository, use a Flutter SDK version that satisfies the highest package requirement.
+Use a Flutter SDK at or above these versions before running any package commands.
 
 ## Local Development
 
