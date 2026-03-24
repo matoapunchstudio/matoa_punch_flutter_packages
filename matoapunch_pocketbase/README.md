@@ -11,6 +11,26 @@ It provides:
 - auth refresh during initialization when a stored token is still valid
 - a small facade for explicit `user` and `admin` access
 
+## Package Constraints
+
+This package currently uses one consistent toolchain:
+- Dart SDK: `^3.9.0`
+- Flutter SDK: `^3.35.0`
+- CI Flutter version: `3.35.x`
+
+Core runtime dependencies:
+- `matoapunch_core`
+- `pocketbase ^0.23.2`
+- `shared_preferences ^2.5.4`
+
+Code generation and linting:
+- `freezed_annotation ^3.1.0`
+- `json_annotation ^4.11.0`
+- `build_runner ^2.13.1`
+- `freezed ^3.2.5`
+- `json_serializable ^6.13.1`
+- `very_good_analysis ^10.2.0`
+
 ## Installation
 
 Add the package:
@@ -20,6 +40,14 @@ dart pub add matoapunch_pocketbase
 ```
 
 The package depends on Flutter because it uses `shared_preferences`.
+
+For local development, use the same Flutter line as CI:
+
+```sh
+flutter --version
+```
+
+You should be on Flutter `3.35.x`.
 
 ## Required Configuration
 
