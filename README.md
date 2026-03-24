@@ -59,6 +59,27 @@ Typical use cases:
 
 See [`matoapunch_limiter/README.md`](./matoapunch_limiter/README.md) for examples.
 
+### `matoapunch_pocketbase`
+
+Lightweight PocketBase integration package for shared user and admin auth flows in Flutter apps.
+
+Main capabilities:
+
+- shared `PocketBase` clients for user and admin access
+- persisted auth state with `shared_preferences`
+- automatic auth refresh during initialization when stored tokens are still valid
+- explicit facade APIs for `user`, `admin`, `userClient`, and `adminClient`
+- `PbErrorMessage` for PocketBase field-level error mapping
+
+Typical use cases:
+
+- initialize shared PocketBase access once at app startup
+- restore persisted sessions for user and admin flows
+- keep auth handling consistent across multiple Flutter apps
+- centralize PocketBase wrapper logic instead of duplicating setup code
+
+See [`matoapunch_pocketbase/README.md`](./matoapunch_pocketbase/README.md) for setup and usage examples.
+
 ### `matoapunch_rbac`
 
 Lightweight RBAC utilities for modeling permissions and roles in Flutter and Dart apps.
@@ -86,6 +107,7 @@ packages/
 ├── matoapunch_core/
 ├── matoapunch_http/
 ├── matoapunch_limiter/
+├── matoapunch_pocketbase/
 ├── matoapunch_rbac/
 └── README.md
 ```
@@ -95,6 +117,7 @@ packages/
 Current package constraints are not fully uniform yet:
 
 - `matoapunch_core` and `matoapunch_http` target Dart `^3.9.0` and Flutter `^3.35.0`
+- `matoapunch_pocketbase` also targets Dart `^3.9.0` and Flutter `^3.35.0`
 - `matoapunch_limiter` and `matoapunch_rbac` target Dart `^3.11.0` and Flutter `^3.41.0`
 
 When working across the whole repository, use a Flutter SDK version that satisfies the highest package requirement.
@@ -133,7 +156,7 @@ For packages that use code generation, also run:
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-At the moment, `matoapunch_core` is the package in this repo that clearly depends on code generation tooling such as `freezed` and `json_serializable`.
+At the moment, `matoapunch_core` and `matoapunch_pocketbase` are the packages in this repo that clearly depend on code generation tooling such as `freezed` and `json_serializable`.
 
 ## Notes
 
